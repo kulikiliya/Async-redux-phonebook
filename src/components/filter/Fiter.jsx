@@ -12,7 +12,9 @@ export const Filter = () => {
     <label>
       Filter
       <FilerInput
-        onChange={e => dispatch(filerData(e.target.value))}
+        onChange={e => {
+          dispatch(filerData(e.target.value));
+        }}
         type="text"
         name="filter"
         value={filter}

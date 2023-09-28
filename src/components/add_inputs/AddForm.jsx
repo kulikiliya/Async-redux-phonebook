@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { FormDiv, Button, Input } from './AddForm.styled';
 import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/filter/slice';
+import { addContactThunk } from 'redux/filter/operation';
 
 export const AddForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
 
   const handleInput = e => {
@@ -16,7 +16,7 @@ export const AddForm = () => {
         break;
 
       case 'number':
-        setNumber(value);
+        setPhone(value);
         break;
 
       default:
@@ -27,10 +27,10 @@ export const AddForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    dispatch(addContact(name, number));
+    dispatch(addContactThunk({ name, phone }));
 
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -50,7 +50,7 @@ export const AddForm = () => {
         Phone
         <Input
           onChange={handleInput}
-          value={number}
+          value={phone}
           type="tel"
           name="number"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"

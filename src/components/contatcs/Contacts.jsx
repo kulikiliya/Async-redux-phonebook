@@ -1,24 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ContainerDiv, Ul, Button } from './Contacts.styled';
-import { deleteContact } from 'redux/filter/slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContact, selectFilter } from 'redux/filter/selectors';
-import { filterContacts } from 'components/contatcs/filterItem';
+import { selectMyFilter } from 'redux/filter/selectors';
+import { deleteContactThunk, fetchContacts } from 'redux/filter/operation';
 
 export const Contacts = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContact);
-  const filter = useSelector(selectFilter);
+  const myFilter = useSelector(selectMyFilter);
 
-  const data = filterContacts(contacts, filter);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <ContainerDiv>
       <Ul>
-        {data.map(item => (
+        {myFilter.map(item => (
           <li key={item.id}>
-            {item.name}: {item.number}
-            <Button onClick={() => dispatch(deleteContact(item.id))}>
+            {item.name}: {item.phone}
+            <Button
+              onClick={() => {
+                dispatch(deleteContactThunk(item.id));
+              }}
+            >
               Delete
             </Button>
           </li>
